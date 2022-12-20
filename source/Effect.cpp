@@ -56,9 +56,9 @@ Effect::~Effect()
 	m_pEffect = nullptr;
 }
 
-void Effect::SetMatrix(const Matrix& matrix)
+void Effect::SetMatrix(float* matrix)
 {
-	m_pMatWorldViewProjVariable->SetMatrix(reinterpret_cast<const float*>(&matrix));
+	m_pMatWorldViewProjVariable->SetMatrix(matrix);
 }
 
 ID3DX11Effect* Effect::LoadEffect(ID3D11Device* pDevice, const std::wstring& assetFile)

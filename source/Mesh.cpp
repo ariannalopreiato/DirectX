@@ -61,6 +61,11 @@ void Mesh::Render(ID3D11DeviceContext* pDeviceContext)
 	}
 }
 
+void Mesh::SetMatrix(float* matrix)
+{
+	m_pEffect->SetMatrix(matrix);
+}
+
 Mesh::~Mesh()
 {
 	m_pIndexBuffer->Release();

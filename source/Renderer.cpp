@@ -78,12 +78,22 @@ namespace dae {
 
 	void Renderer::Update(const Timer* pTimer)
 	{
-		Matrix viewProjMatrix{ m_pCamera->GetViewMatrix() * m_pCamera->GetProjectionMatrix() };
-		
+		m_pCamera->Update(pTimer);
+
+		Matrix viewProjMatrix{ m_pCamera->GetViewMatrix() * m_pCamera->GetProjectionMatrix()};
+		float matrix[16];
+		for (int i{ 0 }; i < 4; ++i)
+		{
+			for (int j{ 0 }; j < 4; ++j)
+			{
+				matrix[4 * i + j] = viewProjMatrix[j][i];
+			}
+		}
+		m_pMesh->SetMatrix(&matrix[0]);
 	}
 
 	void Renderer::Render()
-	{
+	{ 
 		if (!m_IsInitialized)
 			return;
 

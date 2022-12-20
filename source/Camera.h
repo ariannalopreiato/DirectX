@@ -9,9 +9,11 @@ public:
 	Camera(float aspectRatio, float fovAngle, const Vector3& origin);
 	void Initialize(float aspectRatio, float fovAngle = 45.f, Vector3 origin = { 0.f, 0.f, 0.f });
 
-	void Update(Timer* pTimer);
+	void Update(const Timer* pTimer);
 	Matrix GetViewMatrix();
 	Matrix GetProjectionMatrix();
+
+	Matrix invViewMatrix{};
 
 private:
 	Vector3 origin{};
@@ -27,7 +29,7 @@ private:
 	float totalPitch{};
 	float totalYaw{};
 
-	Matrix invViewMatrix{};
+	
 	Matrix viewMatrix{};
 	Matrix projectionMatrix{};
 	Matrix worldMatrix{};

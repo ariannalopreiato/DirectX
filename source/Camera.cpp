@@ -40,7 +40,7 @@ void Camera::CalculateProjectionMatrix()
 	projectionMatrix = Matrix::CreatePerspectiveFovLH(fov, aspectRatio, nearPlane, farPlane);
 }
 
-void Camera::Update(Timer* pTimer)
+void Camera::Update(const Timer* pTimer)
 {
 	const float deltaTime = pTimer->GetElapsed();
 
@@ -68,9 +68,9 @@ void Camera::Update(Timer* pTimer)
 		if ((mouseState & SDL_BUTTON_RMASK) != 0)
 		{
 			if (mouseY < 0)
-				origin.y -= moveFactor;
-			if (mouseY > 0)
 				origin.y += moveFactor;
+			if (mouseY > 0)
+				origin.y -= moveFactor;
 		}
 		else
 		{
@@ -79,15 +79,15 @@ void Camera::Update(Timer* pTimer)
 			if (mouseY > 0)
 				origin.z -= moveFactor;
 
-			totalYaw -= mouseX * deltaTime;
+			totalYaw += mouseX * deltaTime;
 		}
 	}
 	else
 	{
 		if ((mouseState & SDL_BUTTON_RMASK) != 0)
 		{
-			totalPitch += mouseY * deltaTime;
-			totalYaw -= mouseX * deltaTime;
+			totalPitch -= mouseY * deltaTime;
+			totalYaw += mouseX * deltaTime;
 		}
 	}
 	const Matrix rotation{ Matrix::CreateRotation(totalPitch, totalYaw, 0.f) };

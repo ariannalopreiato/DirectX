@@ -16,7 +16,7 @@ class Mesh
 public:
 	Mesh(ID3D11Device* pDevice, std::vector<Vertex_PosCol> vertices, std::vector<uint32_t> indices);
 	void Render(ID3D11DeviceContext* pDeviceContext);
-	Effect* GetEffect() { return m_pEffect; }
+	void SetMatrix(float* matrix);
 	~Mesh();
 
 private:

@@ -11,7 +11,7 @@ public:
 	ID3DX11Effect*& GetEffect() { return m_pEffect; }
 	ID3DX11EffectTechnique*& GetTechnique() { return m_pTechnique; }
 	ID3D11InputLayout*& GetInputLayout() { return m_pInputLayout; }
-	void SetMatrix(const Matrix& matrix);
+	void SetMatrix(float* matrix);
 
 private:
 	ID3DX11Effect* m_pEffect;
