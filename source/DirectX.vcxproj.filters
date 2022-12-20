@@ -38,6 +38,9 @@
     </ClInclude>
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -60,5 +63,10 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DirectX.rc" />
   </ItemGroup>
 </Project>

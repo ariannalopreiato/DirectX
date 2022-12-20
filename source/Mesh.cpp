@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Mesh.h"
-
+#include "Effect.h"
 
 Mesh::Mesh(ID3D11Device* pDevice, std::vector<Vertex_PosCol> vertices, std::vector<uint32_t> indices)
 {
@@ -64,7 +64,10 @@ void Mesh::Render(ID3D11DeviceContext* pDeviceContext)
 Mesh::~Mesh()
 {
 	m_pIndexBuffer->Release();
+	m_pIndexBuffer = nullptr;
+
 	m_pVertexBuffer->Release();
+	m_pVertexBuffer = nullptr;
 
 	delete m_pEffect;
 	m_pEffect = nullptr;

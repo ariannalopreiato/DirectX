@@ -1,30 +1,27 @@
 #pragma once
-#include "Effect.h"
+#include "ColorRGB.h"
+#include "Math.h"
 
-struct Vector3
-{
-	float x;
-	float y;
-	float z;
-};
+using namespace dae;
 
 struct Vertex_PosCol
 {
-	Vector3 pos;
-	Vector3 col;
+	Vector3 position;
+	ColorRGB color;
 };
 
+class Effect;
 class Mesh
 {
 public:
 	Mesh(ID3D11Device* pDevice, std::vector<Vertex_PosCol> vertices, std::vector<uint32_t> indices);
 	void Render(ID3D11DeviceContext* pDeviceContext);
+	Effect* GetEffect() { return m_pEffect; }
 	~Mesh();
 
 private:
-	uint32_t m_NumIndices;
-	ID3D11Buffer* m_pVertexBuffer;
-	ID3D11Buffer* m_pIndexBuffer;
-	Effect* m_pEffect;
+	uint32_t m_NumIndices{};
+	ID3D11Buffer* m_pVertexBuffer{};
+	ID3D11Buffer* m_pIndexBuffer{};
+	Effect* m_pEffect{};
 };
-

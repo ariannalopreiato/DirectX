@@ -1,5 +1,6 @@
 #pragma once
 #include "Mesh.h"
+#include "Camera.h"
 
 struct SDL_Window;
 struct SDL_Surface;
@@ -18,7 +19,7 @@ namespace dae
 		Renderer& operator=(Renderer&&) noexcept = delete;
 
 		void Update(const Timer* pTimer);
-		void Render() const;
+		void Render();		
 
 	private:
 		SDL_Window* m_pWindow{};
@@ -28,31 +29,27 @@ namespace dae
 
 		bool m_IsInitialized{ false };
 
+		Camera* m_pCamera{};
+
 		//display adapter, used to create resources and enumerate capabilities
-		ID3D11Device* m_pDevice;
+		ID3D11Device* m_pDevice{};
 
 		//setting in which a device is used (set pipeline states, generate rendeing commands) NOT thread safe
-		ID3D11DeviceContext* m_pDeviceContext;
+		ID3D11DeviceContext* m_pDeviceContext{};
 
 		//contains two buffers (screen/front and back) everytime a new frame is displayed they swap place
-		IDXGISwapChain* m_pSwapChain;
+		IDXGISwapChain* m_pSwapChain{};
 
 		//buffer used to mask pixels in an image (if a pixel is drawn or not)
-		ID3D11Texture2D* m_pDepthStencilBuffer;
+		ID3D11Texture2D* m_pDepthStencilBuffer{};
 
 		//access to resource/texture during depth-stencil testing
-		ID3D11DepthStencilView* m_pDepthStencilView;
+		ID3D11DepthStencilView* m_pDepthStencilView{};
 
-		ID3D11Resource* m_pRenderTargetBuffer;
+		ID3D11Resource* m_pRenderTargetBuffer{};
 
 		//access to resource/texture that is used as render target
-		ID3D11RenderTargetView* m_pRenderTargetView;
-
-		//access the resource/texture as a constant buffer
-		//ID3D11ShaderResourceView* m_pShaderResourceView;
-
-		//access an unordered resource using a pixel shader or a compute shader
-		//ID3D11UnorderedAccessView* m_pUnorderedAccessView;
+		ID3D11RenderTargetView* m_pRenderTargetView{};
 
 		Mesh* m_pMesh{};
 

@@ -19,50 +19,70 @@ namespace dae {
 		else
 		{
 			std::cout << "DirectX initialization failed!\n";
-		}
+		}		
+		  
+		std::vector<Vertex_PosCol> vertices
+		{
+			/*{{0.0f, 0.5f, 0.5f}, {1.f, 0.f, 0.f}},
+			{{0.5f, -0.5f, 0.5f}, {0.f, 0.f, 1.f}},
+			{{-0.5f, -0.5f, 0.5f}, {0.f, 1.f, 0.f}}*/
+
+			{{0.f, 3.f, 2.f}, {1.f, 0.f, 0.f}},
+			{{3.f, -3.f, 2.f}, {0.f, 0.f, 1.f}},
+			{{-3.f, -3.f, 2.f}, {0.f, 1.f, 0.f}}
+
+		};
+
+		std::vector<uint32_t> indices{ 0, 1, 2 };
+
+		m_pMesh = new Mesh{ m_pDevice, vertices, indices };
+
+		m_pCamera = new Camera{ float(m_Width) / float(m_Height), 45.f, {0.f, 0.f, -10.f} };
 	}
 
 	Renderer::~Renderer()
 	{
-		if (m_pRenderTargetView)
-			m_pRenderTargetView->Release();
+		m_pDepthStencilBuffer->Release();
+		m_pDepthStencilBuffer = nullptr;
 
-		if (m_pRenderTargetBuffer)
-			m_pRenderTargetBuffer->Release();
+		m_pDepthStencilView->Release();
+		m_pDepthStencilView = nullptr;
 
-		if (m_pDepthStencilView)
-			m_pDepthStencilView->Release();
+		m_pDevice->Release();
+		m_pDevice = nullptr;
 
-		if (m_pDepthStencilBuffer)
-			m_pDepthStencilBuffer->Release();
-
-		if (m_pSwapChain)
-			m_pSwapChain->Release();
 
 		if (m_pDeviceContext)
 		{
 			m_pDeviceContext->ClearState();
 			m_pDeviceContext->Flush();
 			m_pDeviceContext->Release();
+			m_pDeviceContext = nullptr;
 		}
 
-		if (m_pDevice)
-			m_pDevice->Release();
+		m_pSwapChain->Release();
+		m_pSwapChain = nullptr;
 
-		if (m_pMesh)
-		{
-			delete m_pMesh;
-			m_pMesh = nullptr;
-		}
+		m_pRenderTargetView->Release();
+		m_pRenderTargetView = nullptr;
+
+		m_pRenderTargetBuffer->Release();
+		m_pRenderTargetBuffer = nullptr;
+
+		delete m_pMesh;
+		m_pMesh = nullptr;
+
+		delete m_pCamera;
+		m_pCamera = nullptr;
 	}
 
 	void Renderer::Update(const Timer* pTimer)
 	{
-
+		Matrix viewProjMatrix{ m_pCamera->GetViewMatrix() * m_pCamera->GetProjectionMatrix() };
+		
 	}
 
-
-	void Renderer::Render() const
+	void Renderer::Render()
 	{
 		if (!m_IsInitialized)
 			return;
@@ -72,18 +92,7 @@ namespace dae {
 		m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView, &clearColor.r);
 		m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
-		//2. set pipeline + invoke drawcalls (= render)
-		std::vector<Vertex_PosCol> vertices
-		{
-			{{0.0f, 0.5f, 0.5f}, {1.f, 0.f, 0.f}},
-			{{0.5f, -0.5f, 0.5f}, {0.f, 0.f, 1.f}},
-			{{-0.5f, -0.5f, 0.5f}, {0.f, 1.f, 0.f}}
-		};
-
-		std::vector<uint32_t> indices{ 0, 1, 2 };
-
-		Mesh* m_pMesh{};
-		m_pMesh = new Mesh(m_pDevice, vertices, indices);
+		//2. set pipeline + invoke drawcalls (= render)		
 		m_pMesh->Render(m_pDeviceContext);
 
 		//3. present backbuffer (swap)

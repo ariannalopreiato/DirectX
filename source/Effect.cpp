@@ -8,6 +8,10 @@ Effect::Effect(ID3D11Device* pDevice, const std::wstring& assetFile)
 	if (!m_pTechnique->IsValid())
 		std::wcout << L"Technique not valid\n";
 
+	m_pMatWorldViewProjVariable = m_pEffect->GetVariableByName("gWorldViewProj")->AsMatrix();
+	if (!m_pMatWorldViewProjVariable->IsValid())
+		std::wcout << L"m_pMatWorldViewProjVariable not valid!\n";
+
 	//create vertex layout
 	static constexpr uint32_t numElements{ 2 };
 	D3D11_INPUT_ELEMENT_DESC vertexDesc[numElements]{};
@@ -39,9 +43,22 @@ Effect::Effect(ID3D11Device* pDevice, const std::wstring& assetFile)
 
 Effect::~Effect()
 {
-	m_pEffect->Release();
+	m_pMatWorldViewProjVariable->Release();
+	m_pMatWorldViewProjVariable = nullptr;
+
 	m_pTechnique->Release();
+	m_pTechnique = nullptr;
+
 	m_pInputLayout->Release();
+	m_pInputLayout = nullptr;
+
+	m_pEffect->Release();
+	m_pEffect = nullptr;
+}
+
+void Effect::SetMatrix(const Matrix& matrix)
+{
+	m_pMatWorldViewProjVariable->SetMatrix(reinterpret_cast<const float*>(&matrix));
 }
 
 ID3DX11Effect* Effect::LoadEffect(ID3D11Device* pDevice, const std::wstring& assetFile)
