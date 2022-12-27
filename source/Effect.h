@@ -1,6 +1,7 @@
 #pragma once
 #include "Camera.h"
 #include "Mesh.h"
+#include "Texture.h"
 
 class Effect
 {
@@ -12,13 +13,16 @@ public:
 	ID3DX11EffectTechnique*& GetTechnique() { return m_pTechnique; }
 	ID3D11InputLayout*& GetInputLayout() { return m_pInputLayout; }
 	void SetMatrix(float* matrix);
+	void SetDiffuseMap(Texture* pDiffuseTexture);
 
 private:
 	ID3DX11Effect* m_pEffect;
 	ID3DX11EffectTechnique* m_pTechnique{};
 	ID3D11InputLayout* m_pInputLayout{};
 	//world view projection matrix variable
-	ID3DX11EffectMatrixVariable* m_pMatWorldViewProjVariable;
+	ID3DX11EffectMatrixVariable* m_pMatWorldViewProjVariable{};
+	
+	ID3DX11EffectShaderResourceVariable* m_pDiffuseMapVariable{};
 
 	//ID3D11Buffer* m_pCBuffer;
 	//ID3D11Buffer* m_pTBuffer;
@@ -32,4 +36,14 @@ private:
 };
 
 //class Effect_PosTex final : public Effect
+//{
+//public:
+//	Effect_PosTex(ID3D11Device* pDevice, const std::wstring& assetFile);
+//
+//	void SetDiffuseMap(Texture* pDiffuseTexture);
+//
+//private:
+//	ID3DX11Effect* m_pEffect;
+//	ID3DX11EffectShaderResourceVariable* m_pDiffuseMapVariable{};
+//};
 

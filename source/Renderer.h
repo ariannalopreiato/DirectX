@@ -1,6 +1,7 @@
 #pragma once
 #include "Mesh.h"
 #include "Camera.h"
+#include "Texture.h"
 
 struct SDL_Window;
 struct SDL_Surface;
@@ -52,6 +53,8 @@ namespace dae
 		ID3D11RenderTargetView* m_pRenderTargetView{};
 
 		Mesh* m_pMesh{};
+
+		Texture* m_pTexture{};
 
 		//DIRECTX
 		HRESULT InitializeDirectX();

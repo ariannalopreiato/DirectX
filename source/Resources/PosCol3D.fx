@@ -1,16 +1,20 @@
 float4x4 gWorldViewProj : WorldViewProjection;
 
+Texture2D gDiffuseMap : DiffuseMap;
+
 //input/output structs
 struct VS_INPUT
 {
 	float3 Position : POSITION;	
 	float3 Color : COLOR;
+	float2 uv : TEXCOORD;
 };
 
 struct VS_OUTPUT
 {
 	float4 Position : SV_POSITION;
-	float3 Color : COLOR;
+	float3 Color : COLOR; 
+	float2 uv : TEXCOORD;
 };
 
 //vertex shader
@@ -20,6 +24,7 @@ VS_OUTPUT VS(VS_INPUT input)
 	//output.Position = float4(input.Position, 1.0f);
 	output.Position = mul(gWorldViewProj, float4(input.Position, 1.0f));
 	output.Color = input.Color;
+	output.uv = input.uv;
 	return output;
 }
 
@@ -38,3 +43,10 @@ technique11 DefaultTechnique
 		SetPixelShader(CompileShader(ps_5_0, PS()));
 	}
 }
+
+SamplerState samPoint
+{
+	Filter = MIN_MAG_MIP_POINT;
+	AddressU = Wrap; 
+	AddressV = Wrap;
+};

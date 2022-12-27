@@ -38,6 +38,8 @@ namespace dae {
 		m_pMesh = new Mesh{ m_pDevice, vertices, indices };
 
 		m_pCamera = new Camera{ float(m_Width) / float(m_Height), 45.f, {0.f, 0.f, -10.f} };
+	
+		m_pTexture = Texture::LoadFromFile("./Resources/uv_grid_2.png", m_pDevice);
 	}
 
 	Renderer::~Renderer()
@@ -67,13 +69,16 @@ namespace dae {
 		m_pRenderTargetView = nullptr;
 
 		m_pRenderTargetBuffer->Release();
-		m_pRenderTargetBuffer = nullptr;
-
-		delete m_pMesh;
-		m_pMesh = nullptr;
+		m_pRenderTargetBuffer = nullptr;		
 
 		delete m_pCamera;
 		m_pCamera = nullptr;
+
+		delete m_pTexture;
+		m_pTexture = nullptr;
+
+		delete m_pMesh;
+		m_pMesh = nullptr;
 	}
 
 	void Renderer::Update(const Timer* pTimer)

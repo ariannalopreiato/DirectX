@@ -5,22 +5,23 @@
 
 namespace dae
 {
-	//struct Vector2;
+	struct Vector2;
 
-	//class Texture
-	//{
-	//public:
-	//	~Texture();
+	class Texture
+	{
+	public:
+		~Texture();
 
-	//	static Texture* LoadFromFile(const std::string& path);
-	//	ColorRGB Sample(const Vector2& uv) const;
-	//	ID3D11ShaderResourceView* GetResourceView();
+		static Texture* LoadFromFile(const std::string& path, ID3D11Device* pDevice);
+		ColorRGB Sample(const Vector2& uv) const;
+		ID3D11ShaderResourceView* GetResourceView();
 
-	//private:
-	//	Texture(SDL_Surface* pSurface, ID3D11Device* pDevice);
+	private:
+		Texture(SDL_Surface* pSurface, ID3D11Device* pDevice);
 
-	//	SDL_Surface* m_pSurface{ nullptr };
-	//	uint32_t* m_pSurfacePixels{ nullptr };
-	//	//ID3D11Texture2D* m_pResource{};
-	//};
+		SDL_Surface* m_pSurface{ nullptr };
+		uint32_t* m_pSurfacePixels{ nullptr };
+		ID3D11Texture2D* m_pResource{};
+		ID3D11ShaderResourceView* m_pSRV{};
+	};
 }

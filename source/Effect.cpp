@@ -12,6 +12,10 @@ Effect::Effect(ID3D11Device* pDevice, const std::wstring& assetFile)
 	if (!m_pMatWorldViewProjVariable->IsValid())
 		std::wcout << L"m_pMatWorldViewProjVariable not valid!\n";
 
+	m_pDiffuseMapVariable = m_pEffect->GetVariableByName("gDiffuseMap")->AsShaderResource();
+	if (!m_pDiffuseMapVariable->IsValid())
+		std::wcout << L"m_pDiffuseMapVariable not valid!\n";
+
 	//create vertex layout
 	static constexpr uint32_t numElements{ 2 };
 	D3D11_INPUT_ELEMENT_DESC vertexDesc[numElements]{};
@@ -46,11 +50,14 @@ Effect::~Effect()
 	m_pMatWorldViewProjVariable->Release();
 	m_pMatWorldViewProjVariable = nullptr;
 
-	m_pTechnique->Release();
-	m_pTechnique = nullptr;
+	m_pDiffuseMapVariable->Release();
+	m_pDiffuseMapVariable = nullptr;
 
 	m_pInputLayout->Release();
 	m_pInputLayout = nullptr;
+
+	m_pTechnique->Release();
+	m_pTechnique = nullptr;
 
 	m_pEffect->Release();
 	m_pEffect = nullptr;
@@ -108,3 +115,27 @@ ID3DX11Effect* Effect::LoadEffect(ID3D11Device* pDevice, const std::wstring& ass
 
 	return pEffect;
 }
+
+void Effect::SetDiffuseMap(Texture* pDiffuseTexture)
+{
+	if (m_pDiffuseMapVariable)
+		m_pDiffuseMapVariable->SetResource(pDiffuseTexture->GetResourceView());
+}
+
+
+//Effect_PosTex::Effect_PosTex(ID3D11Device* pDevice, const std::wstring& assetFile)
+//	: Effect(pDevice, assetFile)
+//{	
+//	m_pEffect = Effect::GetEffect();
+//	m_pDiffuseMapVariable = m_pEffect->GetVariableByName("gDiffuseMap")->AsShaderResource();
+//	if (!m_pDiffuseMapVariable->IsValid())
+//	{
+//		std::wcout << L"m_pDiffuseMapVariable not valid!\n";
+//	}
+//}
+//
+//void Effect_PosTex::SetDiffuseMap(Texture* pDiffuseTexture)
+//{
+//	if (m_pDiffuseMapVariable)
+//		m_pDiffuseMapVariable->SetResource(pDiffuseTexture->GetResourceView());
+//}
