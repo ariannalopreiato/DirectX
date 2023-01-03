@@ -33,6 +33,7 @@ VS_OUTPUT VS(VS_INPUT input)
 //pixel shader
 float4 PS(VS_OUTPUT input) : SV_TARGET
 {
+	//Sample(gDiffuseMap);
 	return float4(input.uv, 1.f);
 }
 
