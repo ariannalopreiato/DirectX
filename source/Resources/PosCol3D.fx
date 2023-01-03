@@ -2,6 +2,8 @@ float4x4 gWorldViewProj : WorldViewProjection;
 
 Texture2D gDiffuseMap : DiffuseMap;
 
+Texture2D <float4> gTexture;
+
 //input/output structs
 struct VS_INPUT
 {
