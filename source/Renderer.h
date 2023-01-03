@@ -54,7 +54,7 @@ namespace dae
 
 		Mesh* m_pMesh{};
 
-		Texture* m_pTexture{};
+		//Texture* m_pTexture{};
 
 		//DIRECTX
 		HRESULT InitializeDirectX();
