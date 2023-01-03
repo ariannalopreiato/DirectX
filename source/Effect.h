@@ -19,11 +19,15 @@ private:
 	ID3DX11Effect* m_pEffect;
 	ID3DX11EffectTechnique* m_pTechnique{};
 	ID3D11InputLayout* m_pInputLayout{};
-
 	//world view projection matrix variable
 	ID3DX11EffectMatrixVariable* m_pMatWorldViewProjVariable{};
 	
 	ID3DX11EffectShaderResourceVariable* m_pDiffuseMapVariable{};
+
+	//ID3D11Buffer* m_pCBuffer;
+	//ID3D11Buffer* m_pTBuffer;
+	//ID3D11UnorderedAccessView* m_pUAV;
+	//ID3D11ShaderResourceView* m_pSRV;
 
 	static ID3DX11Effect* LoadEffect(ID3D11Device* pDevice, const std::wstring& assetFile);
 
@@ -36,8 +40,6 @@ private:
 //public:
 //	Effect_PosTex(ID3D11Device* pDevice, const std::wstring& assetFile);
 //
-//	void BuildInputLayout();
-//	void LoadEffectVariable();
 //	void SetDiffuseMap(Texture* pDiffuseTexture);
 //
 //private:
