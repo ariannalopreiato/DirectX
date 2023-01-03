@@ -7,14 +7,14 @@ struct VS_INPUT
 {
 	float3 Position : POSITION;	
 	float3 Color : COLOR;
-	float2 uv : TEXCOORD;
+	float3 uv : TEXCOORD;
 };
 
 struct VS_OUTPUT
 {
 	float4 Position : SV_POSITION;
 	float3 Color : COLOR; 
-	float2 uv : TEXCOORD;
+	float3 uv : TEXCOORD;
 };
 
 //vertex shader
@@ -31,7 +31,7 @@ VS_OUTPUT VS(VS_INPUT input)
 //pixel shader
 float4 PS(VS_OUTPUT input) : SV_TARGET
 {
-	return float4(input.Color, 1.f);
+	return float4(input.uv, 1.f);
 }
 
 technique11 DefaultTechnique

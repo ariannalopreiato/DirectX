@@ -37,7 +37,7 @@ Mesh::Mesh(ID3D11Device* pDevice, std::vector<Vertex_PosCol> vertices, std::vect
 
 void Mesh::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	//1. set primitive toppology
+	//1. set primitive topology
 	pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//2. set input layout
