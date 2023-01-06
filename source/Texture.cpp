@@ -43,14 +43,14 @@ namespace dae
 
 	Texture::~Texture()
 	{
+		//delete m_pSurfacePixels;
+		//m_pSurfacePixels = nullptr;
+
 		if (m_pSurface)
 		{
 			SDL_FreeSurface(m_pSurface);
 			m_pSurface = nullptr;
-		}
-
-		delete m_pSurfacePixels;
-		m_pSurfacePixels = nullptr;
+		}		
 
 		m_pResource->Release();
 		m_pResource = nullptr;

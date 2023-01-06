@@ -17,8 +17,8 @@ public:
 
 private:
 	ID3DX11Effect* m_pEffect;
-	ID3DX11EffectTechnique* m_pTechnique{};
-	ID3D11InputLayout* m_pInputLayout{};
+	ID3DX11EffectTechnique* m_pTechnique;
+	ID3D11InputLayout* m_pInputLayout;
 
 	//world view projection matrix variable
 	ID3DX11EffectMatrixVariable* m_pMatWorldViewProjVariable{};

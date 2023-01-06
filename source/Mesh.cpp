@@ -66,6 +66,11 @@ void Mesh::SetMatrix(float* matrix)
 	m_pEffect->SetMatrix(matrix);
 }
 
+void Mesh::SetDiffuseMap(Texture* pDiffuseTexture)
+{
+	m_pEffect->SetDiffuseMap(pDiffuseTexture);
+}
+
 Mesh::~Mesh()
 {
 	m_pIndexBuffer->Release();
