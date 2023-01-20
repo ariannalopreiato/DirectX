@@ -31,7 +31,7 @@ Effect::Effect(ID3D11Device* pDevice, const std::wstring& assetFile)
 	vertexDesc[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 
 	vertexDesc[2].SemanticName = "TEXCOORD";
-	vertexDesc[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	vertexDesc[2].Format = DXGI_FORMAT_R32G32_FLOAT;
 	vertexDesc[2].AlignedByteOffset = 24;
 	vertexDesc[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 

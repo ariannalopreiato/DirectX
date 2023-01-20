@@ -28,7 +28,7 @@ VS_OUTPUT VS(VS_INPUT input)
 {
 	VS_OUTPUT output = (VS_OUTPUT)0;
 	//output.Position = float4(input.Position, 1.0f);
-	output.Position = mul(gWorldViewProj, float4(input.Position, 1.0f));
+	output.Position = mul(float4(input.Position, 1.0f), gWorldViewProj);
 	output.Color = input.Color;
 	output.Tangent = mul(normalize(input.Tangent), (float3x3) gWorldViewProj);
 	output.Normal = mul(normalize(input.Normal), (float3x3) gWorldViewProj);

@@ -9,6 +9,7 @@ struct Vertex_PosCol
 {
 	Vector3 position;
 	ColorRGB color;
+	Vector2 uv;
 };
 
 class Effect;

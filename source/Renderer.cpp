@@ -27,10 +27,10 @@ namespace dae {
 			{{0.5f, -0.5f, 0.5f}, {0.f, 0.f, 1.f}},
 			{{-0.5f, -0.5f, 0.5f}, {0.f, 1.f, 0.f}}*/
 
-			{{-3.f, 3.f, 2.f}, {1.f, 0.f, 0.f}},
-			{{3.f, -3.f, 2.f}, {0.f, 0.f, 1.f}},
-			{{-3.f, -3.f, 2.f}, {0.f, 1.f, 0.f}},
-			{{3.f, 3.f, 2.f}, {0.f, 1.f, 0.f}}
+			{{-3.f, 3.f, 2.f}, {1.f, 0.f, 0.f}, {0,0}},
+			{{3.f, -3.f, 2.f}, {0.f, 0.f, 1.f}, {1,1}},
+			{{-3.f, -3.f, 2.f}, {0.f, 1.f, 0.f}, {0,1}},
+			{{3.f, 3.f, 2.f}, {0.f, 1.f, 0.f}, {1,0}}
 
 		};
 
@@ -102,7 +102,7 @@ namespace dae {
 		{
 			for (int j{ 0 }; j < 4; ++j)
 			{
-				matrix[4 * i + j] = viewProjMatrix[j][i];
+				matrix[4 * i + j] = viewProjMatrix[i][j];
 			}
 		}
 		m_pMesh->SetMatrix(&matrix[0]);
