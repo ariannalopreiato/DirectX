@@ -53,10 +53,27 @@ void Mesh::Render(ID3D11DeviceContext* pDeviceContext)
 
 	//5. draw
 	D3DX11_TECHNIQUE_DESC techDesc{};
-	m_pEffect->GetTechnique()->GetDesc(&techDesc);
+	ID3DX11EffectTechnique* technique{};
+
+	switch (m_CurrentTechnique)
+	{
+	case TechniqueType::linear:
+		technique = m_pEffect->GetLinearTechnique(); 
+		break;
+
+	case TechniqueType::point:
+		technique = m_pEffect->GetPointTechnique();
+		break;
+
+	case TechniqueType::anisotropic:
+		technique = m_pEffect->GetAnisotropicTechnique();
+		break;
+	}
+	
+	technique->GetDesc(&techDesc);
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
-		m_pEffect->GetTechnique()->GetPassByIndex(p)->Apply(0, pDeviceContext);
+		technique->GetPassByIndex(p)->Apply(0, pDeviceContext);
 		pDeviceContext->DrawIndexed(m_NumIndices, 0, 0);
 	}
 }

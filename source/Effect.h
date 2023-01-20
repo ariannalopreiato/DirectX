@@ -10,13 +10,18 @@ public:
 	~Effect();
 
 	ID3DX11Effect*& GetEffect() { return m_pEffect; }
-	ID3DX11EffectTechnique*& GetTechnique() { return m_pTechnique; }
+	ID3DX11EffectTechnique*& GetPointTechnique() { return m_pPointTechnique; }
+	ID3DX11EffectTechnique*& GetLinearTechnique() { return m_pLinearTechnique; }
+	ID3DX11EffectTechnique*& GetAnisotropicTechnique() { return m_pAnisotropicTechnique; }
 	ID3D11InputLayout*& GetInputLayout() { return m_pInputLayout; }
 	void SetMatrix(float* matrix);
 	void SetDiffuseMap(Texture* pDiffuseTexture);
 
 private:
 	ID3DX11Effect* m_pEffect;
+	ID3DX11EffectTechnique* m_pPointTechnique;
+	ID3DX11EffectTechnique* m_pLinearTechnique;
+	ID3DX11EffectTechnique* m_pAnisotropicTechnique;
 	ID3DX11EffectTechnique* m_pTechnique;
 	ID3D11InputLayout* m_pInputLayout;
 
@@ -30,18 +35,3 @@ private:
 	//virtual void BuildInputLayout() = 0;
 	//virtual void LoadEffectVariable() = 0;
 };
-
-//class Effect_PosTex final : public Effect
-//{
-//public:
-//	Effect_PosTex(ID3D11Device* pDevice, const std::wstring& assetFile);
-//
-//	void BuildInputLayout();
-//	void LoadEffectVariable();
-//	void SetDiffuseMap(Texture* pDiffuseTexture);
-//
-//private:
-//	ID3DX11Effect* m_pEffect;
-//	ID3DX11EffectShaderResourceVariable* m_pDiffuseMapVariable{};
-//};
-

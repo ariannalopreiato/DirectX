@@ -21,6 +21,7 @@ namespace dae
 
 		void Update(const Timer* pTimer);
 		void Render();		
+		void LoopSampleState();
 
 	private:
 		SDL_Window* m_pWindow{};

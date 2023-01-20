@@ -36,6 +36,9 @@ VS_OUTPUT VS(VS_INPUT input)
 	return output;
 }
 
+//pixel shader
+
+//point
 SamplerState samPoint
 {
 	Filter = MIN_MAG_MIP_POINT;
@@ -43,21 +46,68 @@ SamplerState samPoint
 	AddressV = Wrap;
 };
 
-//pixel shader
-float4 PS(VS_OUTPUT input) : SV_TARGET
+float4 PSP(VS_OUTPUT input) : SV_TARGET
 {
-	//Sample(gDiffuseMap);
 	input.Color = gDiffuseMap.Sample(samPoint, input.uv);
 	return float4(input.Color, 1.f);
 }
 
-technique11 DefaultTechnique
+technique11 PointTechnique
 {
 	pass P0
 	{
 		SetVertexShader(CompileShader(vs_5_0, VS()));
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_5_0, PS()));
+		SetPixelShader(CompileShader(ps_5_0, PSP()));
+	}
+}
+
+
+//linear 
+SamplerState samLinear
+{
+	Filter = MIN_MAG_MIP_LINEAR;
+	AddressU = Wrap;
+	AddressV = Wrap;
+};
+
+float4 PSL(VS_OUTPUT input) : SV_TARGET
+{
+	input.Color = gDiffuseMap.Sample(samLinear, input.uv);
+	return float4(input.Color, 1.f);
+}
+
+technique11 LinearTechnique
+{
+	pass P0
+	{
+		SetVertexShader(CompileShader(vs_5_0, VS()));
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_5_0, PSL()));
+	}
+}
+
+//anisotropic
+SamplerState samAnisotropic
+{
+	Filter = ANISOTROPIC;
+	AddressU = Wrap;
+	AddressV = Wrap;
+};
+
+float4 PSA(VS_OUTPUT input) : SV_TARGET
+{
+	input.Color = gDiffuseMap.Sample(samAnisotropic, input.uv);
+	return float4(input.Color, 1.f);
+}
+
+technique11 AnisotropicTechnique
+{
+	pass P0
+	{
+		SetVertexShader(CompileShader(vs_5_0, VS()));
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_5_0, PSA()));
 	}
 }
 

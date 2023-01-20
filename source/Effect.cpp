@@ -4,8 +4,17 @@
 Effect::Effect(ID3D11Device* pDevice, const std::wstring& assetFile)
 {
 	m_pEffect = LoadEffect(pDevice, assetFile);
-	m_pTechnique = m_pEffect->GetTechniqueByName("DefaultTechnique");
-	if (!m_pTechnique->IsValid())
+
+	m_pPointTechnique = m_pEffect->GetTechniqueByName("PointTechnique");
+	if (!m_pPointTechnique->IsValid())
+		std::wcout << L"Technique not valid\n";
+
+	m_pLinearTechnique = m_pEffect->GetTechniqueByName("LinearTechnique");
+	if (!m_pPointTechnique->IsValid())
+		std::wcout << L"Technique not valid\n";
+
+	m_pAnisotropicTechnique = m_pEffect->GetTechniqueByName("AnisotropicTechnique");
+	if (!m_pPointTechnique->IsValid())
 		std::wcout << L"Technique not valid\n";
 
 	m_pMatWorldViewProjVariable = m_pEffect->GetVariableByName("gWorldViewProj")->AsMatrix();
@@ -47,7 +56,7 @@ Effect::Effect(ID3D11Device* pDevice, const std::wstring& assetFile)
 
 	//create input layout
 	D3DX11_PASS_DESC passDesc{};
-	m_pTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
+	m_pPointTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
 
 	HRESULT result = pDevice->CreateInputLayout(
 		vertexDesc,
@@ -71,8 +80,8 @@ Effect::~Effect()
 	m_pInputLayout->Release();
 	m_pInputLayout = nullptr;
 
-	m_pTechnique->Release();
-	m_pTechnique = nullptr;
+	m_pPointTechnique->Release();
+	m_pPointTechnique = nullptr;
 
 	m_pEffect->Release();
 	m_pEffect = nullptr;

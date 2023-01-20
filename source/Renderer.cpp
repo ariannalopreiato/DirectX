@@ -125,6 +125,22 @@ namespace dae {
 		m_pSwapChain->Present(0, 0);
 	}
 
+	void Renderer::LoopSampleState()
+	{
+		switch (m_pMesh->m_CurrentTechnique)
+		{
+		case TechniqueType::point:
+			m_pMesh->m_CurrentTechnique = TechniqueType::linear;
+			break;
+		case TechniqueType::linear:
+			m_pMesh->m_CurrentTechnique = TechniqueType::anisotropic;
+			break;
+		case TechniqueType::anisotropic:
+			m_pMesh->m_CurrentTechnique = TechniqueType::point;
+			break;
+		}
+	}
+
 	HRESULT Renderer::InitializeDirectX()
 	{
 		//1. create device and device context

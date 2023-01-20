@@ -12,6 +12,11 @@ struct Vertex_PosCol
 	Vector2 uv;
 };
 
+enum class TechniqueType
+{
+	linear, point, anisotropic
+};
+
 class Effect;
 class Mesh
 {
@@ -21,6 +26,8 @@ public:
 	void SetMatrix(float* matrix);
 	void SetDiffuseMap(Texture* pDiffuseTexture);
 	~Mesh();
+	TechniqueType m_CurrentTechnique = TechniqueType::point;
+
 
 private:
 	uint32_t m_NumIndices{};
