@@ -1,6 +1,11 @@
 float4x4 gWorldViewProj : WorldViewProjection;
+float4x4 gWorldMatrix : WorldMatrix;
+float4x4 gInverseMatrix : ViewInverseMatrix;
 
 Texture2D gDiffuseMap : DiffuseMap;
+Texture2D gNormalMap : NormalMap;
+Texture2D gSpecularMap : SpecularMap;
+Texture2D gGlossinessMap : GlossinessMap;
 
 Texture2D <float4> gTexture;
 
@@ -8,7 +13,7 @@ Texture2D <float4> gTexture;
 struct VS_INPUT
 {
 	float3 Position : POSITION;	
-	float3 Color : COLOR;
+	float4 WorldPosition : COLOR;
 	float2 uv : TEXCOORD;
 	float3 Normal : NORMAL;
 	float3 Tangent : TANGENT;
@@ -17,7 +22,7 @@ struct VS_INPUT
 struct VS_OUTPUT
 {
 	float4 Position : SV_POSITION;
-	float3 Color : COLOR; 
+	float4 WorldPosition : COLOR;
 	float2 uv : TEXCOORD;
 	float3 Normal : NORMAL;
 	float3 Tangent : TANGENT;
@@ -27,13 +32,52 @@ struct VS_OUTPUT
 VS_OUTPUT VS(VS_INPUT input)
 {
 	VS_OUTPUT output = (VS_OUTPUT)0;
-	//output.Position = float4(input.Position, 1.0f);
 	output.Position = mul(float4(input.Position, 1.0f), gWorldViewProj);
-	output.Color = input.Color;
+	output.WorldPosition = mul(float4(input.Position, 1.0f), gWorldMatrix);
 	output.Tangent = mul(normalize(input.Tangent), (float3x3) gWorldViewProj);
 	output.Normal = mul(normalize(input.Normal), (float3x3) gWorldViewProj);
 	output.uv = input.uv;
 	return output;
+} 
+
+float4 PixelShade(VS_OUTPUT input, SamplerState state)
+{
+	float lightIntensity = 7.0f;
+	float shininess = 25.f;
+	float pi = 3.14f;
+	float3 lightDirection = { 0.577f, -0.577f, 0.577f };
+
+	float3 normal = float4(gNormalMap.Sample(state, input.uv)).xyz;
+	float specular = float4(gSpecularMap.Sample(state, input.uv)).x;
+	float glossiness = float4(gGlossinessMap.Sample(state, input.uv)).x * shininess;
+
+	float3 binormal = cross(input.Normal, input.Tangent);
+	float3x3 tangentSpaceAxis = float3x3(input.Tangent, binormal, input.Normal);
+
+	normal = 2 * normal - float3(1.f, 1.f, 1.f);
+	normal = normalize(mul(normal, tangentSpaceAxis));
+
+	float3 viewDirection = normalize(input.WorldPosition.xyz - gInverseMatrix[3].xyz);
+
+	//observed area
+	float lambertLaw = saturate(dot(normal, -lightDirection));
+	float3 observedArea = float3(lambertLaw, lambertLaw, lambertLaw);
+
+	//lambert
+	float3 lambert = (lambertLaw * float4(gDiffuseMap.Sample(state, input.uv)) * lightIntensity) / pi;
+	lambert = saturate(lambert);
+
+	//phong
+	float3 reflection = reflect(normal, -lightDirection);
+	float cosine = dot(reflection, viewDirection);
+	float3 phong = specular * saturate(pow(cosine, glossiness));
+	
+	float3 ambient = float3(0.025f, 0.025f, 0.025f);
+
+	float3 finalColor = (lambert * observedArea) + phong + ambient;
+	finalColor = max(finalColor.x, max(finalColor.y, finalColor.z));
+
+	return float4(finalColor, 1.0f);
 }
 
 //pixel shader
@@ -48,8 +92,9 @@ SamplerState samPoint
 
 float4 PSP(VS_OUTPUT input) : SV_TARGET
 {
-	input.Color = gDiffuseMap.Sample(samPoint, input.uv);
-	return float4(input.Color, 1.f);
+	return PixelShade(input, samPoint);
+	//input.Color = gDiffuseMap.Sample(samPoint, input.uv);
+	//return float4(input.Color, 1.f);
 }
 
 technique11 PointTechnique
@@ -73,8 +118,9 @@ SamplerState samLinear
 
 float4 PSL(VS_OUTPUT input) : SV_TARGET
 {
-	input.Color = gDiffuseMap.Sample(samLinear, input.uv);
-	return float4(input.Color, 1.f);
+	return PixelShade(input, samLinear);
+	//input.Color = gDiffuseMap.Sample(samLinear, input.uv);
+	//return float4(input.Color, 1.f);
 }
 
 technique11 LinearTechnique
@@ -97,8 +143,9 @@ SamplerState samAnisotropic
 
 float4 PSA(VS_OUTPUT input) : SV_TARGET
 {
-	input.Color = gDiffuseMap.Sample(samAnisotropic, input.uv);
-	return float4(input.Color, 1.f);
+	return PixelShade(input, samAnisotropic);
+	//input.Color = gDiffuseMap.Sample(samAnisotropic, input.uv);
+	//return float4(input.Color, 1.f);
 }
 
 technique11 AnisotropicTechnique

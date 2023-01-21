@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Renderer.h"
+#include "Utils.h"
 
 namespace dae {
 
@@ -27,26 +28,31 @@ namespace dae {
 			{{0.5f, -0.5f, 0.5f}, {0.f, 0.f, 1.f}},
 			{{-0.5f, -0.5f, 0.5f}, {0.f, 1.f, 0.f}}*/
 
-			{{-3.f, 3.f, 2.f}, {1.f, 0.f, 0.f}, {0,0}},
-			{{3.f, -3.f, 2.f}, {0.f, 0.f, 1.f}, {1,1}},
-			{{-3.f, -3.f, 2.f}, {0.f, 1.f, 0.f}, {0,1}},
-			{{3.f, 3.f, 2.f}, {0.f, 1.f, 0.f}, {1,0}}
+			//{{-3.f, 3.f, 2.f}, {1.f, 0.f, 0.f}, {0,0}},
+			//{{3.f, -3.f, 2.f}, {0.f, 0.f, 1.f}, {1,1}},
+			//{{-3.f, -3.f, 2.f}, {0.f, 1.f, 0.f}, {0,1}},
+			//{{3.f, 3.f, 2.f}, {0.f, 1.f, 0.f}, {1,0}}
 
 		};
 
 		std::vector<uint32_t> indices
 		{ 
-			0, 1, 2, 
-			0, 3, 1 
+			/*0, 1, 2, 
+			0, 3, 1 */
 		};
+
+		Utils::ParseOBJ("./Resources/vehicle.obj", vertices, indices);
 
 		m_pMesh = new Mesh{ m_pDevice, vertices, indices };
 
 		m_pCamera = new Camera{ float(m_Width) / float(m_Height), 45.f, {0.f, 0.f, -50.f} };
 	
-		m_pTexture = Texture::LoadFromFile("./Resources/uv_grid_2.png", m_pDevice);
+		m_pTexture = Texture::LoadFromFile("./Resources/vehicle_diffuse.png", m_pDevice);
+		m_pNormal = Texture::LoadFromFile("./Resources/vehicle_normal.png", m_pDevice);
+		m_pSpecular = Texture::LoadFromFile("./Resources/vehicle_specular.png", m_pDevice);
+		m_pGlossiness = Texture::LoadFromFile("./Resources/vehicle_gloss.png", m_pDevice);
 
-		m_pMesh->SetDiffuseMap(m_pTexture);
+		m_pMesh->SetMaps(m_pTexture, m_pNormal, m_pSpecular, m_pGlossiness);
 
 		//m_pDeviceContext->GenerateMips(m_pTexture->GetResourceView());
 	}
@@ -81,15 +87,22 @@ namespace dae {
 		m_pRenderTargetBuffer = nullptr;		
 
 		delete m_pCamera;
-		m_pCamera = nullptr;
-
-		
+		m_pCamera = nullptr;		
 
 		delete m_pMesh;
 		m_pMesh = nullptr;
 
 		delete m_pTexture;
 		m_pTexture = nullptr;
+
+		delete m_pNormal;
+		m_pNormal = nullptr;
+
+		delete m_pSpecular;
+		m_pSpecular = nullptr;
+
+		delete m_pGlossiness;
+		m_pGlossiness = nullptr;
 	}
 
 	void Renderer::Update(const Timer* pTimer)

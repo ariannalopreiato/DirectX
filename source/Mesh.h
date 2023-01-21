@@ -10,6 +10,8 @@ struct Vertex_PosCol
 	Vector3 position;
 	ColorRGB color;
 	Vector2 uv;
+	Vector3 normal;
+	Vector3 tangent;
 };
 
 enum class TechniqueType
@@ -24,7 +26,7 @@ public:
 	Mesh(ID3D11Device* pDevice, std::vector<Vertex_PosCol> vertices, std::vector<uint32_t> indices);
 	void Render(ID3D11DeviceContext* pDeviceContext);
 	void SetMatrix(float* matrix);
-	void SetDiffuseMap(Texture* pDiffuseTexture);
+	void SetMaps(Texture* pDiffuseTexture, Texture* pNormal, Texture* pSpecular, Texture* pGlossiness);
 	~Mesh();
 	TechniqueType m_CurrentTechnique = TechniqueType::point;
 

@@ -78,14 +78,24 @@ void Mesh::Render(ID3D11DeviceContext* pDeviceContext)
 	}
 }
 
-void Mesh::SetMatrix(float* matrix)
+void Mesh::SetViewProjMatrix(float* matrix)
 {
-	m_pEffect->SetMatrix(matrix);
+	m_pEffect->SetViewProjMatrix(matrix);
 }
 
-void Mesh::SetDiffuseMap(Texture* pDiffuseTexture)
+void Mesh::SetWorldMatrix(float* matrix)
 {
-	m_pEffect->SetDiffuseMap(pDiffuseTexture);
+	m_pEffect->SetWorldMatrix(matrix);
+}
+
+void Mesh::SetInverseMatrix(float* matrix)
+{
+	m_pEffect->SetInverseMatrix(matrix);
+}
+
+void Mesh::SetMaps(Texture* pDiffuseTexture, Texture* pNormal, Texture* pSpecular, Texture* pGlossiness)
+{
+	m_pEffect->SetMaps(pDiffuseTexture, pNormal, pSpecular, pGlossiness);
 }
 
 Mesh::~Mesh()

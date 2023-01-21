@@ -56,6 +56,9 @@ namespace dae
 		Mesh* m_pMesh{};
 
 		Texture* m_pTexture;
+		Texture* m_pNormal;
+		Texture* m_pSpecular;
+		Texture* m_pGlossiness;
 
 		//DIRECTX
 		HRESULT InitializeDirectX();
