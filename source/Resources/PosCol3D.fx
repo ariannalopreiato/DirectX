@@ -40,15 +40,26 @@ VS_OUTPUT VS(VS_INPUT input)
 	return output;
 } 
 
+float3 MaxToOne(float3 finalColor)
+{
+	float maxColor = float(max(finalColor.x, max(finalColor.y, finalColor.z)));
+
+	if (maxColor > 1.f)
+		return finalColor / maxColor;
+
+	return finalColor;
+}
+
 float4 PixelShade(VS_OUTPUT input, SamplerState state)
 {
 	float lightIntensity = 7.0f;
 	float shininess = 25.f;
-	float pi = 3.14f;
-	float3 lightDirection = { 0.577f, -0.577f, 0.577f };
+	float pi = 3.14159f;
+	float3 lightDirection = normalize(float3(0.577f, -0.577f, 0.577f));
+	float3 ambient = float3(0.025f, 0.025f, 0.025f);
 
 	float3 normal = float4(gNormalMap.Sample(state, input.uv)).xyz;
-	float specular = float4(gSpecularMap.Sample(state, input.uv)).x;
+	float3 specular = float4(gSpecularMap.Sample(state, input.uv)).x;
 	float glossiness = float4(gGlossinessMap.Sample(state, input.uv)).x * shininess;
 
 	float3 binormal = cross(input.Normal, input.Tangent);
@@ -60,22 +71,20 @@ float4 PixelShade(VS_OUTPUT input, SamplerState state)
 	float3 viewDirection = normalize(input.WorldPosition.xyz - gInverseMatrix[3].xyz);
 
 	//observed area
-	float lambertLaw = saturate(dot(normal, -lightDirection));
-	float3 observedArea = float3(lambertLaw, lambertLaw, lambertLaw);
+	float observedArea = saturate(dot(normal, -lightDirection));
 
 	//lambert
-	float3 lambert = (lambertLaw * float4(gDiffuseMap.Sample(state, input.uv)) * lightIntensity) / pi;
+	float3 lambert = (observedArea * float4(gDiffuseMap.Sample(state, input.uv)) * lightIntensity) / pi;
 	lambert = saturate(lambert);
 
 	//phong
 	float3 reflection = reflect(normal, -lightDirection);
-	float cosine = dot(reflection, viewDirection);
-	float3 phong = specular * saturate(pow(cosine, glossiness));
-	
-	float3 ambient = float3(0.025f, 0.025f, 0.025f);
+	float cosine = saturate(max(0.f, dot(reflection, viewDirection)));
+	float3 phong = saturate(specular * pow(cosine, glossiness));
 
-	float3 finalColor = (lambert * observedArea) + phong + ambient;
-	finalColor = max(finalColor.x, max(finalColor.y, finalColor.z));
+
+	float3 finalColor = saturate(lambert * observedArea) + phong + ambient;
+	finalColor = MaxToOne(finalColor);
 
 	return float4(finalColor, 1.0f);
 }

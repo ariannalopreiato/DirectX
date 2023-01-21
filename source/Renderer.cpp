@@ -110,6 +110,8 @@ namespace dae {
 		m_pCamera->Update(pTimer);
 
 		Matrix viewProjMatrix{ m_pCamera->GetViewMatrix() * m_pCamera->GetProjectionMatrix()};
+		Matrix inverseMatrix{ m_pCamera->GetViewMatrix().Inverse() };
+		Matrix worldMatrix{ m_pCamera->GetViewMatrix() };
 		float matrix[16];
 		for (int i{ 0 }; i < 4; ++i)
 		{
@@ -118,7 +120,8 @@ namespace dae {
 				matrix[4 * i + j] = viewProjMatrix[i][j];
 			}
 		}
-		m_pMesh->SetMatrix(&matrix[0]);
+		m_pMesh->SetViewProjMatrix(&matrix[0]);
+		//m_pMesh->SetInverseMatrix();
 	}
 
 	void Renderer::Render()
