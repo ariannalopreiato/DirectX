@@ -91,6 +91,7 @@ float4 PixelShade(VS_OUTPUT input, SamplerState state)
 
 //pixel shader
 
+
 //point
 SamplerState samPoint
 {
@@ -102,8 +103,6 @@ SamplerState samPoint
 float4 PSP(VS_OUTPUT input) : SV_TARGET
 {
 	return PixelShade(input, samPoint);
-	//input.Color = gDiffuseMap.Sample(samPoint, input.uv);
-	//return float4(input.Color, 1.f);
 }
 
 technique11 PointTechnique
@@ -128,8 +127,6 @@ SamplerState samLinear
 float4 PSL(VS_OUTPUT input) : SV_TARGET
 {
 	return PixelShade(input, samLinear);
-	//input.Color = gDiffuseMap.Sample(samLinear, input.uv);
-	//return float4(input.Color, 1.f);
 }
 
 technique11 LinearTechnique
@@ -153,8 +150,6 @@ SamplerState samAnisotropic
 float4 PSA(VS_OUTPUT input) : SV_TARGET
 {
 	return PixelShade(input, samAnisotropic);
-	//input.Color = gDiffuseMap.Sample(samAnisotropic, input.uv);
-	//return float4(input.Color, 1.f);
 }
 
 technique11 AnisotropicTechnique

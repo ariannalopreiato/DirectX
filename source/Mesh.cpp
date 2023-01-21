@@ -2,9 +2,9 @@
 #include "Mesh.h"
 #include "Effect.h"
 
-Mesh::Mesh(ID3D11Device* pDevice, std::vector<Vertex_PosCol> vertices, std::vector<uint32_t> indices)
+Mesh::Mesh(ID3D11Device* pDevice, std::vector<Vertex_PosCol> vertices, std::vector<uint32_t> indices, Effect* pEffect)
 {
-	m_pEffect = new Effect(pDevice, L"./Resources/PosCol3D.fx");
+	m_pEffect = pEffect;
 
 	//create vertex buffer
 	D3D11_BUFFER_DESC bd = {};
@@ -41,7 +41,7 @@ void Mesh::Render(ID3D11DeviceContext* pDeviceContext)
 	pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//2. set input layout
-	pDeviceContext->IASetInputLayout(m_pEffect->GetInputLayout());
+	pDeviceContext->IASetInputLayout(m_pEffect->GetInputLayout()); 
 
 	//3. set vertex buffer
 	constexpr UINT stride = sizeof(Vertex_PosCol);

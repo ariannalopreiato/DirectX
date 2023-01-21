@@ -54,7 +54,9 @@ namespace dae
 		ID3D11RenderTargetView* m_pRenderTargetView{};
 
 		Mesh* m_pMesh{};
+		Mesh* m_pFX{};
 
+		Texture* m_pFXTexture;
 		Texture* m_pTexture;
 		Texture* m_pNormal;
 		Texture* m_pSpecular;

@@ -19,7 +19,10 @@ public:
 	void SetInverseMatrix(float* matrix);
 	void SetMaps(Texture* pDiffuseTexture, Texture* pNormal, Texture* pSpecular, Texture* pGlossiness);
 
-private:
+	virtual void BuildInputLayout(ID3D11Device* pDevice) {};
+	virtual void LoadEffectVariable() {};
+
+protected:
 	ID3DX11Effect* m_pEffect;
 	ID3DX11EffectTechnique* m_pPointTechnique;
 	ID3DX11EffectTechnique* m_pLinearTechnique;
@@ -38,7 +41,25 @@ private:
 	ID3DX11EffectShaderResourceVariable* m_pGlossinessMapVariable{};
 
 	static ID3DX11Effect* LoadEffect(ID3D11Device* pDevice, const std::wstring& assetFile);
+};
 
-	//virtual void BuildInputLayout() = 0;
-	//virtual void LoadEffectVariable() = 0;
+class CompleteEffect : public Effect
+{
+
+public:
+	CompleteEffect(ID3D11Device* pDevice, const std::wstring& assetFile);
+
+private:
+	void BuildInputLayout(ID3D11Device* pDevice);
+	void LoadEffectVariable();
+};
+
+class FlatEffect : public Effect
+{
+public:
+	FlatEffect(ID3D11Device* pDevice, const std::wstring& assetFile);
+
+private:
+	void BuildInputLayout(ID3D11Device* pDevice);
+	void LoadEffectVariable();
 };

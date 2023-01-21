@@ -20,15 +20,17 @@ enum class TechniqueType
 };
 
 class Effect;
+class CompleteEffect;
+class FlatEffect;
 class Mesh
 {
 public:
-	Mesh(ID3D11Device* pDevice, std::vector<Vertex_PosCol> vertices, std::vector<uint32_t> indices);
+	Mesh(ID3D11Device* pDevice, std::vector<Vertex_PosCol> vertices, std::vector<uint32_t> indices, Effect* pEffect);
 	void Render(ID3D11DeviceContext* pDeviceContext);
 	void SetViewProjMatrix(float* matrix);
 	void SetWorldMatrix(float* matrix);
 	void SetInverseMatrix(float* matrix);
-	void SetMaps(Texture* pDiffuseTexture, Texture* pNormal, Texture* pSpecular, Texture* pGlossiness);
+	void SetMaps(Texture* pDiffuseTexture, Texture* pNormal = nullptr, Texture* pSpecular = nullptr, Texture* pGlossiness = nullptr);
 	~Mesh();
 	TechniqueType m_CurrentTechnique = TechniqueType::point;
 
